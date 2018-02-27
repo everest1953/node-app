@@ -1,0 +1,55 @@
+extends main_layout
+block content
+    div.container-fluid
+        div.home-container.mt-2
+            aside
+                ul.list-group  
+                    each suburb in suburbs
+                        li.list-group-item
+                            <i class="material-icons">location_searching</i>
+                            a(href="/" + suburb.suburb + "/1")= suburb.suburb
+            main.main-properties-container
+                each property in properties
+                    .card
+                        img.card-img-top(src='/img/houses_sm/'+ property.image_name, alt= property.address)
+                        .card-body
+                            p.card-title=  property.address
+                        ul.list-group.list-group-flush
+                            li.list-group-item= property.suburb
+                        .card-body
+                            button.btn.btn-primary.btn-block(type='button', data-toggle='modal', data-target='#housemodal' data-id= property.id, data-address= property.address, data-description= property.description, data-image= '/img/houses_lg/'+property.image_name) More info...
+                div
+                nav(aria-label='...')
+                    if pages > 0   
+                        - var page = current
+                        - var prev = current - 1     
+                        - var next = parseFloat(current) + parseFloat(1)
+                        ul.pagination.pagination-sm
+                            if current == 1
+                                li.page-item.disabled      
+                                    a.page-link(href='', tabindex='-1') Prev
+                                li.page-item.disabled
+                                    a.page-link(href=current, tabindex='-1') #{page} of #{pages}
+                                        
+                                a.page-link(href=next++, tabindex='-1') Next
+                            else
+                                li.page-item
+                                    a.page-link(href=prev, tabindex='-1') Prev
+                                li.page-item.disabled
+                                    a.page-link(href=current, tabindex='-1') #{page} of #{pages}
+                                li.page-item
+                                    a.page-link(href=next++, +tabindex='-1') Next
+
+                                                 
+
+                            
+            footer 
+                p Copyright &copy; 2018
+            #housemodal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='housemodalTitle', aria-hidden='true')
+                .modal-dialog.modal-dialog-centered(role='document')
+                    .modal-content
+                        .modal-header
+                            img.image_modal(src='' width='100%')
+                        .modal-body
+                        .modal-footer
+                            button.btn.btn-secondary(type='button', data-dismiss='modal') Close
